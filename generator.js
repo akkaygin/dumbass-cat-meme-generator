@@ -67,7 +67,7 @@ function makeBottomText(date) {
   const month = monthLUT[nextDate.getMonth()];
   const day = nextDate.getDate();
   const postfix = getOrderPostfix(day);
-  return `Whats fucking next, ${month} ${day}${postfix}? Fuck everything.`;
+  return `Whats next, ${month} ${day}${postfix}? Fuck everything.`;
 }
 
 function generateSlop() {
