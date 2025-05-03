@@ -1,11 +1,83 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <title>dumbass cat meme generator</title>
+  <meta charset="UTF-8">
+  <title>Meme Generator</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 50px;
+      background-color: #f4f4f4;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    button, input[type="file"] {
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    p {
+      margin: 0;
+      padding: 0;
+    }
+
+    #output {
+      margin-top: 20px;
+      width: 100%;
+      height: auto;
+      border: 2px dashed #ccc;
+      padding: 10px;
+      background-color: #fafafa;
+    }
+
+    #message {
+      color: red;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    img {
+      width: 100%;
+    }
+  </style>
 </head>
 <body>
-  <h1>lol</h1>
-  <h2 id="text"></h2>
+  <div class="container">
+    <h1>Silly Cat Autoslop Generator</h1>
+    <div>
+      <button onclick="fetchRandomCat()">Get a Random Silly Cat</button>
+        <label for="localCat">or</label>
+        <input type="file" id="localCat" name="localCat" accept="image/*">
+    </div>
+    <div style="margin: 1rem;">
+      <button onclick="generateAutoslop()">Generate Autoslop</button>
+      <button onclick="reset()">Reset</button>
+    </div>
+
+    <div id="message"></div>
+    <div id="output">
+      <img id="previewImg" style="display: none;"/>
+      <img id="outImg" style="display: none;"/>
+    </div>
+  </div>
+
   <script src="generator.js"></script>
 </body>
 </html>

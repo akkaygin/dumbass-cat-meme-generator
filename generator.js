@@ -70,24 +70,85 @@ function makeBottomText(date) {
   return `Whats next, ${month} ${day}${postfix}? Fuck everything.`;
 }
 
-function generateSlop() {
-  const canvas = document.createElement('canvas');
-  canvas.width = '500';
-  canvas.height = '500';
+let state = 'waiting';
 
+const message = document.getElementById('message');
+const previewImg = document.getElementById('previewImg');
+const outImg = document.getElementById('outImg');
+
+function generateAutoslop() {
+  if (previewImg.style.display == 'none') {
+    state = 'errored';
+    message.innerText = 'Please get a random cat or upload one.';
+    return;
+  }
+  
+  state = 'generating';
+  message.innerText = '';
+
+  const canvas = document.createElement('canvas');
+  canvas.width = previewImg.width;
+  canvas.height = previewImg.height;
+  
   const ctx = canvas.getContext('2d');
-  // draw image here
+  ctx.drawImage(previewImg, 0, 0, previewImg.width, previewImg.height);
+
   const topText = makeTopText(new Date(Date.now()));
   const bottomText = makeBottomText(new Date(Date.now()));
-  ctx.font = '20px impact';
-  ctx.textAlign = 'center';
-  ctx.fillText(topText, canvas.width/2, canvas.height * 0.1, canvas.width);
-  ctx.fillText(bottomText, canvas.width/2, canvas.height * 0.9, canvas.width);
+
+  // not exact but pretty good, especially when fit to %90
+  ctx.font = '1px impact';
+  const fontSize = canvas.width * 0.9 / ctx.measureText(bottomText).width;
   
+  ctx.font = `${fontSize}px impact`;
+  ctx.fillStyle = '#fff'
+  ctx.textAlign = 'center';
+  ctx.strokeStyle = '#000 2px'
+  ctx.fillText(topText, canvas.width/2, canvas.height * 0.1, canvas.width);
+  ctx.strokeText(topText, canvas.width/2, canvas.height * 0.1, canvas.width);
+  ctx.fillText(bottomText, canvas.width/2, canvas.height * 0.9, canvas.width);
+  ctx.strokeText(bottomText, canvas.width/2, canvas.height * 0.9, canvas.width);
+
   const imgSrc = canvas.toDataURL('image/png');
-  const img = document.createElement('img');
-  img.src = imgSrc;
-  document.body.appendChild(img);
+  outImg.src = imgSrc;
+  outImg.style.display = 'block';
+  previewImg.style.display = 'none';
+
+  state = 'done';
 }
 
-generateSlop();
+function showCurrentCat() {
+  const image = document.getElementById('previewImg');
+  image.src = URL.createObjectURL(currentCat);
+  image.style.display = 'block';
+  currentCatW = image.width;
+  currentCatH = image.height;
+}
+
+function fetchRandomCat() {
+  const apiUrl = 'https://cataas.com/cat';
+  fetch(apiUrl).then(response => {
+    if (!response.ok) throw new Error('Couldn\'t fetch a silly cat.');
+    state = 'loaded';
+    currentCat = response;
+    showCurrentCat();
+  }).catch(error => {
+    state = 'errored';
+    message.innerText = 'Failed to fetch a random silly cat.';
+  });
+}
+
+const localCat = document.getElementById('localCat');
+localCat.addEventListener('change', () => {
+  state = 'loaded';
+  currentCat = localCat.files[0];
+  showCurrentCat();
+});
+
+function reset() {
+  state = 'waiting';
+  currentCat = null;
+  previewImg.style.display = 'none';
+  outImg.style.display = 'none';
+  message.innerText = '';
+}
