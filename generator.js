@@ -80,7 +80,7 @@ function generateAutoslop() {
     message.innerText = 'Please get a random cat or upload one.';
     return;
   }
-  
+
   const canvas = document.createElement('canvas');
   canvas.width = previewImg.width;
   canvas.height = previewImg.height;
@@ -104,7 +104,7 @@ function generateAutoslop() {
   ctx.fillText(bottomText, canvas.width/2, canvas.height * 0.9, canvas.width);
   ctx.strokeText(bottomText, canvas.width/2, canvas.height * 0.9, canvas.width);
 
-  const imgSrc = canvas.toDataURL('image/png');
+  const imgSrc = canvas.toDataURL('image/jpeg', 0.5);
   outImg.src = imgSrc;
   outImg.style.display = 'block';
   previewImg.style.display = 'none';
