@@ -31,6 +31,7 @@
     button, input[type="file"] {
       font-size: 16px;
       cursor: pointer;
+      outline: none;
     }
 
     p {
@@ -63,12 +64,12 @@
     <h1>Silly Cat Autoslop Generator</h1>
     <div>
       <button onclick="fetchRandomCat()">Get a Random Silly Cat</button>
-        <label for="localCat">or</label>
-        <input type="file" id="localCat" name="localCat" accept="image/*">
+      <label for="localCat">or</label>
+      <input type="file" id="localCat" name="localCat" accept="image/*" style="float:right">
     </div>
-    <div style="margin: 1rem;">
-      <button onclick="generateAutoslop()">Generate Autoslop</button>
-      <button onclick="reset()">Reset</button>
+    <div style="margin: 1rem; display: flex;">
+      <button onclick="generateAutoslop()" style="flex-grow: 2; margin: 0 10px;">Generate Autoslop</button>
+      <button onclick="reset()" style="margin: 0 10px;">Reset</button>
     </div>
 
     <div id="message"></div>
