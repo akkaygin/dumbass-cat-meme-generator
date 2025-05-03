@@ -70,22 +70,17 @@ function makeBottomText(date) {
   return `Whats next, ${month} ${day}${postfix}? Fuck everything.`;
 }
 
-let state = 'waiting';
-
 const message = document.getElementById('message');
 const previewImg = document.getElementById('previewImg');
+previewImg.crossOrigin = "anonymous";
 const outImg = document.getElementById('outImg');
 
 function generateAutoslop() {
   if (previewImg.style.display == 'none') {
-    state = 'errored';
     message.innerText = 'Please get a random cat or upload one.';
     return;
   }
   
-  state = 'generating';
-  message.innerText = '';
-
   const canvas = document.createElement('canvas');
   canvas.width = previewImg.width;
   canvas.height = previewImg.height;
@@ -113,40 +108,25 @@ function generateAutoslop() {
   outImg.src = imgSrc;
   outImg.style.display = 'block';
   previewImg.style.display = 'none';
-
-  state = 'done';
-}
-
-function showCurrentCat() {
-  const image = document.getElementById('previewImg');
-  image.src = URL.createObjectURL(currentCat);
-  image.style.display = 'block';
-  currentCatW = image.width;
-  currentCatH = image.height;
+  message.innerText = '';
 }
 
 function fetchRandomCat() {
-  const apiUrl = 'https://cataas.com/cat';
-  fetch(apiUrl).then(response => {
-    if (!response.ok) throw new Error('Couldn\'t fetch a silly cat.');
-    state = 'loaded';
-    currentCat = response;
-    showCurrentCat();
-  }).catch(error => {
-    state = 'errored';
-    message.innerText = 'Failed to fetch a random silly cat.';
-  });
+  currentCat = 'https://cataas.com/cat';
+  previewImg.src = currentCat;
+  previewImg.style.display = 'block';
+  message.innerText = '';
 }
 
 const localCat = document.getElementById('localCat');
 localCat.addEventListener('change', () => {
-  state = 'loaded';
   currentCat = localCat.files[0];
-  showCurrentCat();
+  previewImg.src = URL.createObjectURL(currentCat);
+  previewImg.style.display = 'block';
+  message.innerText = '';
 });
 
 function reset() {
-  state = 'waiting';
   currentCat = null;
   previewImg.style.display = 'none';
   outImg.style.display = 'none';
