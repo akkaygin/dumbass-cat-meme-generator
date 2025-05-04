@@ -68,7 +68,7 @@
       <input type="file" id="localCat" name="localCat" accept="image/*" style="float:right">
     </div>
     <div style="margin: 1rem; display: flex;">
-      <button onclick="generateAutoslop()" style="flex-grow: 2; margin: 0 10px;">Generate Autoslop</button>
+      <button onclick="showAutoslop()" style="flex-grow: 2; margin: 0 10px;">Generate Autoslop</button>
       <button onclick="reset()" style="margin: 0 10px;">Reset</button>
     </div>
 
@@ -80,5 +80,45 @@
   </div>
 
   <script src="generator.js"></script>
+  <script>
+    const message = document.getElementById('message');
+    const previewImg = document.getElementById('previewImg');
+    previewImg.crossOrigin = "anonymous";
+    const outImg = document.getElementById('outImg');
+
+    function fetchRandomCat() {
+      previewImg.src = 'https://cataas.com/cat';
+      previewImg.style.display = 'block';
+      outImg.style.display = 'none';
+      message.innerText = '';
+    }
+
+    const localCat = document.getElementById('localCat');
+    localCat.addEventListener('change', () => {
+      previewImg.src = URL.createObjectURL(localCat.files[0]);
+      previewImg.style.display = 'block';
+      outImg.style.display = 'none';
+      message.innerText = '';
+    });
+
+    function reset() {
+      currentCat = null;
+      previewImg.style.display = 'none';
+      outImg.style.display = 'none';
+      message.innerText = '';
+    }
+
+    function showAutoslop() {
+      if (previewImg.src == null) {
+        message.innerText = 'Please get a random cat or upload one.';
+        return;
+      }
+
+      outImg.src = generateAutoslop(previewImg);
+      outImg.style.display = 'block';
+      previewImg.style.display = 'none';
+      message.innerText = '';
+    }
+  </script>
 </body>
 </html>

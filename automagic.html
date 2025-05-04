@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Silly Cat Autoslop</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="message"></div>
+  <img id="previewImg" style="display: none;"/>
+  <img id="outImg" style="display: none;"/>
+
+  <script src="generator.js"></script>
+  <script>
+    (() => {
+      const parameters = new URLSearchParams(document.location.search);
+      const cat = parameters.get('cat');
+      if (cat == null) {
+        message.innerText = 'give a cat';
+        return;
+      }
+  
+      const image = document.getElementById('previewImg');
+      image.crossOrigin = 'anonymous';
+      image.src = cat;
+      image.onload = () => {
+        const out = document.getElementById('outImg');
+        out.src = generateAutoslop(image);;
+        out.style.display = 'block';
+      };
+    })();
+  </script>
+</body>
+</html>

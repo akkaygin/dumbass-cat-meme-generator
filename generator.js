@@ -70,23 +70,13 @@ function makeBottomText(date) {
   return `Whats next, ${month} ${day}${postfix}? Fuck everything.`;
 }
 
-const message = document.getElementById('message');
-const previewImg = document.getElementById('previewImg');
-previewImg.crossOrigin = "anonymous";
-const outImg = document.getElementById('outImg');
-
-function generateAutoslop() {
-  if (previewImg.style.display == 'none') {
-    message.innerText = 'Please get a random cat or upload one.';
-    return;
-  }
-
+function generateAutoslop(image) {
   const canvas = document.createElement('canvas');
-  canvas.width = previewImg.width;
-  canvas.height = previewImg.height;
+  canvas.width = image.width;
+  canvas.height = image.height;
   
   const ctx = canvas.getContext('2d');
-  ctx.drawImage(previewImg, 0, 0, previewImg.width, previewImg.height);
+  ctx.drawImage(image, 0, 0, image.width, image.height);
 
   const topText = makeTopText(new Date(Date.now()));
   const bottomText = makeBottomText(new Date(Date.now()));
@@ -104,31 +94,5 @@ function generateAutoslop() {
   ctx.fillText(bottomText, canvas.width/2, canvas.height * 0.9, canvas.width);
   ctx.strokeText(bottomText, canvas.width/2, canvas.height * 0.9, canvas.width);
 
-  const imgSrc = canvas.toDataURL('image/jpeg', 0.5);
-  outImg.src = imgSrc;
-  outImg.style.display = 'block';
-  previewImg.style.display = 'none';
-  message.innerText = '';
-}
-
-function fetchRandomCat() {
-  currentCat = 'https://cataas.com/cat';
-  previewImg.src = currentCat;
-  previewImg.style.display = 'block';
-  message.innerText = '';
-}
-
-const localCat = document.getElementById('localCat');
-localCat.addEventListener('change', () => {
-  currentCat = localCat.files[0];
-  previewImg.src = URL.createObjectURL(currentCat);
-  previewImg.style.display = 'block';
-  message.innerText = '';
-});
-
-function reset() {
-  currentCat = null;
-  previewImg.style.display = 'none';
-  outImg.style.display = 'none';
-  message.innerText = '';
+  return canvas.toDataURL('image/jpeg', 0.5);
 }
