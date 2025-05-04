@@ -20,14 +20,14 @@
     (() => {
       const parameters = new URLSearchParams(document.location.search);
       const cat = parameters.get('cat');
-      if (cat == null) {
-        message.innerText = 'give a cat';
-        return;
-      }
-  
       const image = document.getElementById('previewImg');
       image.crossOrigin = 'anonymous';
-      image.src = cat;
+      if (cat == null) {
+        image.src = 'https://cataas.com/cat';
+      } else {
+        image.src = cat;
+      }
+  
       image.onload = () => {
         const out = document.getElementById('outImg');
         out.src = generateAutoslop(image);;
