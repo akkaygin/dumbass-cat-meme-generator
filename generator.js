@@ -67,7 +67,7 @@ function makeBottomText(date) {
   const month = monthLUT[nextDate.getMonth()];
   const day = nextDate.getDate();
   const postfix = getOrderPostfix(day);
-  return `Whats next, ${month} ${day}${postfix}? Fuck everything.`;
+  return `Whats next, ${month} ${day}${postfix}?`;
 }
 
 function generateAutoslop(image) {
@@ -83,16 +83,24 @@ function generateAutoslop(image) {
 
   // not exact but pretty good, especially when fit to %90
   ctx.font = '1px impact';
-  const fontSize = canvas.width * 0.9 / ctx.measureText(bottomText).width;
+  const fontSize = canvas.width * 0.9 / ctx.measureText(topText).width;
   
   ctx.font = `${fontSize}px impact`;
   ctx.fillStyle = '#fff'
   ctx.textAlign = 'center';
   ctx.strokeStyle = '#000 2px'
-  ctx.fillText(topText, canvas.width/2, canvas.height * 0.1, canvas.width);
-  ctx.strokeText(topText, canvas.width/2, canvas.height * 0.1, canvas.width);
-  ctx.fillText(bottomText, canvas.width/2, canvas.height * 0.9, canvas.width);
-  ctx.strokeText(bottomText, canvas.width/2, canvas.height * 0.9, canvas.width);
+  ctx.fillText(topText, canvas.width / 2, canvas.height * 0.1, canvas.width);
+  ctx.strokeText(topText, canvas.width / 2, canvas.height * 0.1, canvas.width);
+  
+  const metrics = ctx.measureText(bottomText);
+  const textHeight = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
+  console.log(textHeight);
+
+  ctx.fillText(bottomText, canvas.width / 2, canvas.height * 0.9 - textHeight * 1.5, canvas.width);
+  ctx.strokeText(bottomText, canvas.width / 2, canvas.height * 0.9 - textHeight * 1.5, canvas.width);
+  
+  ctx.fillText('Fuck everything.', canvas.width / 2, canvas.height * 0.9, canvas.width);
+  ctx.strokeText('Fuck everything.', canvas.width / 2, canvas.height * 0.9, canvas.width);
 
   return canvas.toDataURL('image/jpeg', 0.5);
 }
